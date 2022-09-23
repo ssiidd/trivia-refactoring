@@ -1,7 +1,17 @@
-Legacy Code Retreat code base
-======
+an Ugly Trivia Game
 
-Use this code base to run your own [Legacy Code Retreat](http://legacycoderetreat.jbrains.ca).
+This game needs refactoring!
 
-As of this writing, there isn't really a single place to get all the information you might want about Legacy Code Retreat. Search the web and ask your colleagues. Most importantly, don't panic! If you've been to Code Retreat even once, then you know most of what you need to run a Legacy Code Retreat. Give it a try!
+Two things to consider:
+1. Testing with Golden Master
+
+We can’t write reasonable unit tests without refactorings first. But we don’t want to refactor without tests at all.
+
+But we can test the application as a whole. Gain control over all external input sources (RNGs, system time, keyboard input and so on). Then save all outputs produced (console output, emails sent, files changed etc). This is our Golden Master.
+
+Now we can change the code and compare if it still yields the same results as before.
+
+2. Using Tools - Free Fall
+
+This is another thing to try out. And probably it’s a good idea to not learn this in production. Just use your IDE refactorings. Do not waste time to understand the code. Trust your IDE and use features like extract method or invert if statement. You will be surprised about the results.
 
