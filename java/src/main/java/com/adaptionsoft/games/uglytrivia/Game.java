@@ -18,12 +18,20 @@ public class Game {
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
+	boolean needToClear = true;
+
 	public void writeToFile(String input){
 		try{
-			File output = new File("/Users/siddharth/Desktop/School/12th Grade/Software Development Lab/trivia-refactoring/masteFile.txt");
-			output.delete();
+			if (needToClear == true){
+				File output = new File("/Users/siddharth/Desktop/School/12th Grade/Software Development Lab/trivia-refactoring/testFile.txt");
+				FileWriter Writer = new FileWriter(output, false);
+				Writer.write("");
+				Writer.close();
+				needToClear = false;
+			}
+			File output = new File("/Users/siddharth/Desktop/School/12th Grade/Software Development Lab/trivia-refactoring/testFile.txt");
 			FileWriter Writer = new FileWriter(output, true);
-			Writer.write(input + "\n");
+			Writer.write("\n" + input);
 			Writer.close();
 		}
 		catch (IOException e){
@@ -151,7 +159,7 @@ public class Game {
 			
 		} else {
 		
-			writeToFile("Answer was corrent!!!!");
+			writeToFile("Answer was correct!!!!");
 			purses[currentPlayer]++;
 			writeToFile(players.get(currentPlayer) 
 					+ " now has "
