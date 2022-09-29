@@ -103,9 +103,7 @@ public class Game {
 			reportPlaces();
 			askQuestion();
 		}
-		
 	}
-
 	
 	private void askQuestion() {
 		if (currentCategory() == "Pop")
@@ -117,7 +115,6 @@ public class Game {
 		if (currentCategory() == "Rock")
 			writeToFile(rockQuestions.removeFirst().toString());		
 	}
-	
 	
 	private String currentCategory() {
 		if (places[currentPlayer] % 4 == 0) return "Pop";
@@ -147,18 +144,11 @@ public class Game {
 	// ------------------------------------------------------------------
 	
 	public boolean wasCorrectlyAnswered() {
-		if (inPenaltyBox[currentPlayer]){
-			if (isLeavingPenaltyBox) {
-				
-				incrementAndDisplayPurse();
-				boolean winner = didPlayerWin();
-				nextPlayer();
-				return winner;
-			} else {
-				nextPlayer();
-				return true;
-			}
-		} else {
+		if (inPenaltyBox[currentPlayer] && !isLeavingPenaltyBox){
+			nextPlayer();
+			return true;
+		}
+		else {
 			incrementAndDisplayPurse();
 			boolean winner = didPlayerWin();
 			nextPlayer();
