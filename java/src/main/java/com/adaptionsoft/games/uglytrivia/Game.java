@@ -14,7 +14,7 @@ public class Game {
     LinkedList rockQuestions = new LinkedList();
     
     int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+    boolean isLeavingPenaltyBox;
 
 	boolean needToClear = true;
 
@@ -73,24 +73,28 @@ public class Game {
 		writeToFile("The category is " + currentCategory());
 	}
 	
-
+	public boolean leavingPenaltyBox(int roll){
+		if (roll % 2 == 1) {
+			writeToFile(players.get(currentPlayer) + " is getting out of the penalty box");
+			return true;
+		}
+		else{
+			writeToFile(players.get(currentPlayer) + " is not getting out of the penalty box");
+			return false;
+		}
+	}
 	
 	public void roll(int roll) {
+		
 		writeToFile(players.get(currentPlayer) + " is the current player");
 		writeToFile("They have rolled a " + roll);
 		
 		if (inPenaltyBox[currentPlayer]) {
-			if (roll % 2 == 1) {
-				isGettingOutOfPenaltyBox = true;
-				writeToFile(players.get(currentPlayer) + " is getting out of the penalty box");
-				
+			isLeavingPenaltyBox = leavingPenaltyBox(roll);
+			if (isLeavingPenaltyBox) {
 				adjustPlaces(roll);
 				reportPlaces();
 				askQuestion();
-			}
-			else {
-				isGettingOutOfPenaltyBox = false;
-				writeToFile(players.get(currentPlayer) + " is not getting out of the penalty box");
 			}
 		}
 		else {
@@ -138,7 +142,7 @@ public class Game {
 	
 	public boolean wasCorrectlyAnswered() {
 		if (inPenaltyBox[currentPlayer]){
-			if (isGettingOutOfPenaltyBox) {
+			if (isLeavingPenaltyBox) {
 				writeToFile("Answer was correct!!!!");
 				incrementAndDisplayPurse();
 				boolean winner = didPlayerWin();
