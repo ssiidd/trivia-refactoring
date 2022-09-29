@@ -46,14 +46,36 @@ public class Game {
 			rockQuestions.addLast("Rock Question " + i);
     	}
     }
+
+	public class Player{
+		int place;
+		int purse;
+		boolean inPenaltyBox;
+		String name;
+		public Player(String n){
+			place = 0;
+			purse = 0;
+			inPenaltyBox = false;
+			name = n;
+		}
+
+		public int getPlace(){
+			return place;
+		}
+		public int getPurse(){
+			return purse;
+		}
+		public void setPlace(int pl){
+			place = pl;
+		}
+		public void setPurse(int pu){
+			purse = pu;
+		}
+	}
 	
 	public boolean add(String playerName) {
 		
-	    players.add(playerName);
-	    places[players.size()] = 0;
-	    purses[players.size()] = 0;
-	    inPenaltyBox[players.size()] = false;
-	    
+	    players.add(new Player(playerName));
 	    writeToFile(playerName + " was added");
 	    writeToFile("They are player number " + players.size());
 		return true;
@@ -123,7 +145,7 @@ public class Game {
 		return "Rock";
 	}
 
-	// wasCorrectlyAnswered / wrongAnswer helper methods ----------------
+	// correctAnswer / wrongAnswer helper methods ----------------
 
 	private void incrementAndDisplayPurse() {
 		writeToFile("Answer was correct!!!!");
@@ -141,9 +163,9 @@ public class Game {
 		return !(purses[currentPlayer] == 6);
 	}
 
-	// ------------------------------------------------------------------
+	// -----------------------------------------------------------
 	
-	public boolean wasCorrectlyAnswered() {
+	public boolean correctAnswer() {
 		if (inPenaltyBox[currentPlayer] && !isLeavingPenaltyBox){
 			nextPlayer();
 			return true;
