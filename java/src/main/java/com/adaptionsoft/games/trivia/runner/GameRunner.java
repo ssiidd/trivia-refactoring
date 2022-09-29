@@ -8,7 +8,6 @@ import com.adaptionsoft.games.uglytrivia.Game;
 public class GameRunner {
 
 	private static boolean notAWinner;
-
 	public static void main(String[] args) {
 		Game aGame = new Game();
 		
@@ -26,12 +25,9 @@ public class GameRunner {
 			if (rand.nextInt(9) == 7) {
 				notAWinner = aGame.wrongAnswer();
 			} else {
-				notAWinner = aGame.wasCorrectlyAnswered();
+				notAWinner = aGame.correctAnswer();
 			}
 			
-			
-			
 		} while (notAWinner);
-		
 	}
 }
