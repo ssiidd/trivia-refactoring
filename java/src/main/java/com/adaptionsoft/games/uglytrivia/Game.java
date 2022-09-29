@@ -47,9 +47,6 @@ public class Game {
     	}
     }
 	
-	public boolean isPlayable() {
-		return (players.size() >= 2);
-	}
 	public boolean add(String playerName) {
 		
 	    players.add(playerName);
@@ -61,6 +58,8 @@ public class Game {
 	    writeToFile("They are player number " + players.size());
 		return true;
 	}
+
+	// Roll helper methods ----------------------------
 
 	private void adjustPlaces(int roll) {
 		places[currentPlayer] = places[currentPlayer] + roll;
@@ -83,7 +82,9 @@ public class Game {
 			return false;
 		}
 	}
-	
+
+	// ------------------------------------------------
+
 	public void roll(int roll) {
 		
 		writeToFile(players.get(currentPlayer) + " is the current player");
@@ -125,7 +126,10 @@ public class Game {
 		return "Rock";
 	}
 
+	// wasCorrectlyAnswered / wrongAnswer helper methods ----------------
+
 	private void incrementAndDisplayPurse() {
+		writeToFile("Answer was correct!!!!");
 		purses[currentPlayer]++;
 		writeToFile(players.get(currentPlayer) 
 				+ " now has "
@@ -139,11 +143,13 @@ public class Game {
 	private boolean didPlayerWin() {
 		return !(purses[currentPlayer] == 6);
 	}
+
+	// ------------------------------------------------------------------
 	
 	public boolean wasCorrectlyAnswered() {
 		if (inPenaltyBox[currentPlayer]){
 			if (isLeavingPenaltyBox) {
-				writeToFile("Answer was correct!!!!");
+				
 				incrementAndDisplayPurse();
 				boolean winner = didPlayerWin();
 				nextPlayer();
@@ -153,7 +159,6 @@ public class Game {
 				return true;
 			}
 		} else {
-			writeToFile("Answer was correct!!!!");
 			incrementAndDisplayPurse();
 			boolean winner = didPlayerWin();
 			nextPlayer();
