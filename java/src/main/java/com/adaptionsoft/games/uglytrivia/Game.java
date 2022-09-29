@@ -4,9 +4,6 @@ import java.util.LinkedList;
 import java.io.*;
 public class Game {
     ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses  = new int[6];
-    boolean[] inPenaltyBox  = new boolean[6];
     
     LinkedList popQuestions = new LinkedList();
     LinkedList scienceQuestions = new LinkedList();
@@ -65,11 +62,20 @@ public class Game {
 		public int getPurse(){
 			return purse;
 		}
+		public boolean getPenaltyBoxStatus(){
+			return inPenaltyBox;
+		}
 		public void setPlace(int pl){
 			place = pl;
 		}
 		public void setPurse(int pu){
 			purse = pu;
+		}
+		public void setPenaltyBoxStatus(boolean p){
+			inPenaltyBox = p;
+		}
+		public String toString(){
+			return name;
 		}
 	}
 	
@@ -84,13 +90,15 @@ public class Game {
 	// Roll helper methods ----------------------------
 
 	private void adjustPlaces(int roll) {
-		places[currentPlayer] = places[currentPlayer] + roll;
-		if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+		((Player) players.get(currentPlayer)).setPlace(((Player) players.get(currentPlayer)).getPlace() + roll);
+		if (((Player) players.get(currentPlayer)).getPlace() > 11){
+			((Player) players.get(currentPlayer)).setPlace(((Player) players.get(currentPlayer)).getPlace() - 12);
+		}
 	}
 	private void reportPlaces() {
 		writeToFile(players.get(currentPlayer) 
 				+ "'s new location is " 
-				+ places[currentPlayer]);
+				+ ((Player) players.get(currentPlayer)).getPlace());
 		writeToFile("The category is " + currentCategory());
 	}
 	
@@ -112,7 +120,7 @@ public class Game {
 		writeToFile(players.get(currentPlayer) + " is the current player");
 		writeToFile("They have rolled a " + roll);
 		
-		if (inPenaltyBox[currentPlayer]) {
+		if (((Player) players.get(currentPlayer)).getPenaltyBoxStatus()) {
 			isLeavingPenaltyBox = leavingPenaltyBox(roll);
 			if (isLeavingPenaltyBox) {
 				adjustPlaces(roll);
@@ -139,9 +147,9 @@ public class Game {
 	}
 	
 	private String currentCategory() {
-		if (places[currentPlayer] % 4 == 0) return "Pop";
-		if ((places[currentPlayer] - 1) % 4 == 0) return "Science";
-		if ((places[currentPlayer] - 2) % 4 == 0) return "Sports";
+		if (((Player) players.get(currentPlayer)).getPlace() % 4 == 0) return "Pop";
+		if ((((Player) players.get(currentPlayer)).getPlace() - 1) % 4 == 0) return "Science";
+		if ((((Player) players.get(currentPlayer)).getPlace() - 2) % 4 == 0) return "Sports";
 		return "Rock";
 	}
 
@@ -149,10 +157,10 @@ public class Game {
 
 	private void incrementAndDisplayPurse() {
 		writeToFile("Answer was correct!!!!");
-		purses[currentPlayer]++;
+		((Player) players.get(currentPlayer)).setPurse(((Player) players.get(currentPlayer)).getPurse() + 1);
 		writeToFile(players.get(currentPlayer) 
 				+ " now has "
-				+ purses[currentPlayer]
+				+ ((Player) players.get(currentPlayer)).getPurse()
 				+ " Gold Coins.");
 	}
 	private void nextPlayer() {
@@ -160,13 +168,13 @@ public class Game {
 		if (currentPlayer == players.size()) currentPlayer = 0;
 	}
 	private boolean didPlayerWin() {
-		return !(purses[currentPlayer] == 6);
+		return !(((Player) players.get(currentPlayer)).getPurse() == 6);
 	}
 
 	// -----------------------------------------------------------
 	
 	public boolean correctAnswer() {
-		if (inPenaltyBox[currentPlayer] && !isLeavingPenaltyBox){
+		if (((Player) players.get(currentPlayer)).getPenaltyBoxStatus() && !isLeavingPenaltyBox){
 			nextPlayer();
 			return true;
 		}
@@ -181,7 +189,7 @@ public class Game {
 	public boolean wrongAnswer(){
 		writeToFile("Question was incorrectly answered");
 		writeToFile(players.get(currentPlayer)+ " was sent to the penalty box");
-		inPenaltyBox[currentPlayer] = true;
+		((Player) players.get(currentPlayer)).setPenaltyBoxStatus(true);
 		nextPlayer();
 		return true;
 	}
